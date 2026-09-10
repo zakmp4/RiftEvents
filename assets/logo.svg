@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 120" width="220" height="120" role="img" aria-label="Rift Events">
+  <defs>
+    <linearGradient id="face" x1="0" y1="0" x2="0.35" y2="1">
+      <stop offset="0" stop-color="#5ee7ff"/>
+      <stop offset="0.45" stop-color="#3aa0ee"/>
+      <stop offset="1" stop-color="#2b7fe0"/>
+    </linearGradient>
+
+    <!-- R = bowl/stem (a "P") plus a slanted leg -->
+    <path id="rBowl" fill-rule="evenodd" clip-rule="evenodd"
+          d="M20,14 H92 V62 H46 V102 H20 Z M46,32 V52 H70 V32 Z"/>
+    <polygon id="rLeg" points="58,56 84,56 98,102 72,102"/>
+    <!-- E = three bars -->
+    <path id="letterE" d="M118,14 H200 V33 H146 V49 H192 V65 H146 V83 H200 V102 H118 Z"/>
+
+    <clipPath id="clipLetters">
+      <use href="#rBowl"/>
+      <use href="#rLeg"/>
+      <use href="#letterE"/>
+    </clipPath>
+  </defs>
+
+  <g clip-path="url(#clipLetters)">
+    <rect x="0" y="0" width="220" height="120" fill="url(#face)"/>
+    <!-- extruded lower band -->
+    <rect x="0" y="80" width="220" height="40" fill="#1b5fd6"/>
+    <!-- top-left highlight -->
+    <polygon points="20,14 92,14 30,34 20,34" fill="#7defff" opacity="0.5"/>
+    <polygon points="118,14 200,14 128,34 118,34" fill="#7defff" opacity="0.5"/>
+    <!-- pixel speckles -->
+    <g fill="#8fd4ff" opacity="0.5">
+      <rect x="28" y="44" width="12" height="12"/><rect x="24" y="68" width="7" height="7"/>
+      <rect x="76" y="24" width="10" height="10"/><rect x="84" y="44" width="6" height="6"/>
+      <rect x="74" y="54" width="4" height="4"/><rect x="34" y="24" width="5" height="5"/>
+      <rect x="76" y="76" width="8" height="8"/>
+      <rect x="130" y="40" width="9" height="9"/><rect x="124" y="26" width="5" height="5"/>
+      <rect x="176" y="22" width="8" height="8"/><rect x="152" y="19" width="5" height="5"/>
+      <rect x="166" y="70" width="13" height="13"/><rect x="188" y="66" width="6" height="6"/>
+      <rect x="132" y="68" width="6" height="6"/>
+    </g>
+  </g>
+
+  <g fill="none" stroke="#150a3d" stroke-width="8" stroke-linejoin="miter">
+    <use href="#rBowl"/>
+    <use href="#rLeg"/>
+    <use href="#letterE"/>
+  </g>
+</svg>

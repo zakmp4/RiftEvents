@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Admin — Rift Events</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="assets/logo.webp">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Press+Start+2P&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- ================= PASSWORD GATE ================= -->
+<div class="gate" id="gate">
+  <div class="card box">
+    <img src="assets/logo.webp" onerror="this.onerror=null;this.src='assets/logo.svg'" alt="Rift Events">
+    <h1>Admin Panel</h1>
+    <p>This area is not linked from the site. Enter the admin password to continue.</p>
+
+    <div class="notice notice-bad" id="gateError" style="display:none">
+      Wrong password. Try again.
+    </div>
+
+    <form id="gateForm" autocomplete="off">
+      <div class="field">
+        <label for="gatePass">Password</label>
+        <input type="password" id="gatePass" placeholder="Enter password" required autofocus>
+      </div>
+      <button class="btn btn-primary" type="submit">Unlock</button>
+    </form>
+
+    <a class="back" href="index.html">&larr; Back to the site</a>
+  </div>
+</div>
+
+<!-- ================= PANEL ================= -->
+<div id="panel" style="display:none">
+
+  <header class="masthead">
+    <div class="shell">
+      <a class="brand" href="index.html">
+        <img src="assets/logo.webp" onerror="this.onerror=null;this.src='assets/logo.svg'" alt="Rift Events logo">
+        <span class="name"><b>Rift Events</b><span>Admin Panel</span></span>
+      </a>
+
+      <nav class="main">
+        <a href="index.html">View site</a>
+        <a href="characters.html">Characters page</a>
+      </nav>
+
+      <div class="nav-right">
+        <button class="btn btn-ghost btn-sm" id="logout">Log out</button>
+      </div>
+    </div>
+  </header>
+
+  <section class="section" style="padding-top:34px">
+    <div class="shell">
+
+      <div class="admin-bar">
+        <div>
+          <div class="kicker" style="margin-bottom:2px">Roster management</div>
+          <h1 style="font-size:26px;margin:0">People on the Characters page</h1>
+        </div>
+        <div class="spacer"></div>
+        <button class="btn btn-ghost btn-sm" id="exportBtn">Export JSON</button>
+        <button class="btn btn-ghost btn-sm" id="importBtn">Import JSON</button>
+        <input type="file" id="importFile" accept="application/json" hidden>
+        <button class="btn btn-danger btn-sm" id="resetBtn">Clear roster</button>
+      </div>
+
+      <div class="admin-grid">
+
+        <!-- add / edit form -->
+        <div class="card card-pad">
+          <h2 style="font-size:19px" id="formTitle">Add a person</h2>
+          <p style="color:var(--muted);font-size:14px;margin-bottom:22px">
+            Anyone added here appears on the Characters page straight away.
+          </p>
+
+          <form id="personForm" autocomplete="off">
+            <div class="field">
+              <label for="f_name">Display name *</label>
+              <input type="text" id="f_name" placeholder="e.g. Nova" required>
+            </div>
+
+            <div class="field">
+              <label for="f_username">Minecraft username</label>
+              <input type="text" id="f_username" placeholder="e.g. Nova">
+              <div class="hint">Used to pull their skin head as the avatar. Leave blank for an initial instead.</div>
+            </div>
+
+            <div class="row-2">
+              <div class="field">
+                <label for="f_rank">Rank</label>
+                <select id="f_rank"></select>
+              </div>
+              <div class="field">
+                <label for="f_joined">Joined</label>
+                <input type="date" id="f_joined">
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="f_bio">Bio</label>
+              <textarea id="f_bio" placeholder="One or two lines about them."></textarea>
+            </div>
+
+            <div class="field">
+              <label for="f_tags">Tags</label>
+              <input type="text" id="f_tags" placeholder="Staff, Event Host, Build Team">
+              <div class="hint">Separate with commas.</div>
+            </div>
+
+            <div style="display:flex;gap:10px">
+              <button class="btn btn-primary" type="submit" id="submitBtn" style="flex:1">Add person</button>
+              <button class="btn btn-ghost" type="button" id="cancelEdit" style="display:none">Cancel</button>
+            </div>
+          </form>
+        </div>
+
+        <!-- roster table -->
+        <div class="card">
+          <div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap;padding:18px 20px;border-bottom:1px solid var(--line)">
+            <label class="search" style="flex:1;min-width:200px">
+              <span aria-hidden="true" style="color:var(--dim)">&#128269;</span>
+              <input id="adminSearch" type="search" placeholder="Filter roster..." autocomplete="off">
+            </label>
+            <span style="color:var(--dim);font-size:13px" id="total">0 people</span>
+          </div>
+
+          <div class="table-wrap">
+            <table class="people">
+              <thead>
+                <tr>
+                  <th>Person</th>
+                  <th>Rank</th>
+                  <th>Joined</th>
+                  <th style="text-align:right">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="peopleBody"></tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="callout warn" style="margin-top:36px">
+        <b>Storage:</b> until you connect a database, the roster is saved in <em>this browser</em>
+        only — people you add here will not show up on anyone else's device, and the password
+        check runs in the browser where it can be bypassed. Both are fixed by the same thing:
+        set <code>API_BASE</code> in <code>js/data.js</code> and deploy the API in
+        <code>server/</code>. The README has the full step-by-step.
+      </div>
+
+    </div>
+  </section>
+
+  <footer class="site">
+    <div class="shell">
+      <div class="foot-bottom" style="margin-top:0;border-top:none;padding-top:0">
+        <span>&copy; <span data-year></span> Rift Events — Admin</span>
+        <span><a href="index.html">Back to the site</a></span>
+      </div>
+    </div>
+  </footer>
+
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/site.js"></script>
+<script src="js/admin.js"></script>
+</body>
+</html>
