@@ -21,7 +21,7 @@
    ============================================================ */
 
 const RiftData = (function () {
-  const API_BASE = ""; // <-- leave empty to use browser storage
+  const API_BASE = "https://riftevents.onrender.com"; // <-- leave empty to use browser storage
   const KEY = "rift.characters.v2";
 
   const RANKS = ["Owner", "Admin", "Moderator", "Host", "Builder", "Member"];
