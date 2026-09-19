@@ -3,8 +3,8 @@
 Website for Rift Events, a scripted Minecraft SMP — plain HTML, CSS and JavaScript. No build
 step, no framework, no npm install. Open the files and they work.
 
-- **Server IP:** play.riftevents.com (Java Edition 1.21.11)
-- **Discord:** https://discord.riftevents.com
+- **Server IP:** riftevents.net (Java Edition 1.21.11)
+- **Discord:** https://discord.riftevents.net
 
 ## Pages
 
@@ -88,7 +88,7 @@ instead. To swap the logo, replace `logo.webp` and nothing else changes.
 
 - **Colours, spacing, fonts** — all the design tokens are at the top of `css/style.css` in the
   `:root` block. Change `--sky` and `--bg` to reskin the whole site.
-- **Server IP** — search for `play.riftevents.com` and replace it. It appears in the nav, the
+- **Server IP** — search for `riftevents.net` and replace it. It appears in the nav, the
   hero, the sidebar, the footer and the support FAQ. The Minecraft version (`1.21.11`) sits in
   the hero, the sidebar IP card, the footer and one support FAQ.
 - **News posts** — plain HTML in `index.html` under the "NEWS + SIDEBAR" comment. Copy an
@@ -96,7 +96,7 @@ instead. To swap the logo, replace `logo.webp` and nothing else changes.
 - **Rules** — plain HTML in `rules.html`. Each rule is one `<article class="card rule">`.
   If you add one, add a matching link in the `.toc` nav so the sidebar stays in sync.
 - **Default cast** — the `SEED` array in `js/data.js`, used the first time someone visits.
-- **Discord link** — search for `discord.riftevents.com`.
+- **Discord link** — search for `discord.riftevents.net`.
 
 ## Previewing locally
 

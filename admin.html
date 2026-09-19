@@ -90,7 +90,20 @@
             <div class="field">
               <label for="f_username">Minecraft username</label>
               <input type="text" id="f_username" placeholder="e.g. Nova">
-              <div class="hint">Used to pull their skin head as the avatar. Leave blank for an initial instead.</div>
+              <div class="hint">Used to show their skin head, unless you choose a picture below.</div>
+            </div>
+
+            <div class="field">
+              <label>Picture</label>
+              <div class="pic-picker">
+                <div class="pic-preview" id="picPreview" aria-hidden="true"></div>
+                <div class="pic-controls">
+                  <label class="btn btn-ghost btn-sm" for="f_image">Choose picture</label>
+                  <input type="file" id="f_image" accept="image/png,image/jpeg,image/webp,image/gif" hidden>
+                  <button type="button" class="btn btn-ghost btn-sm" id="picRemove" hidden>Remove picture</button>
+                  <div class="hint" id="picHint">Optional. Shown instead of their skin. Cropped to a square.</div>
+                </div>
+              </div>
             </div>
 
             <div class="row-2">

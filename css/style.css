@@ -47,6 +47,7 @@ body{
   overflow-x:hidden;
 }
 img{max-width:100%;display:block}
+[hidden]{display:none !important}
 a{color:var(--sky);text-decoration:none}
 a:hover{color:var(--sky-soft)}
 h1,h2,h3,h4{margin:0 0 .5em;line-height:1.15;font-weight:800;letter-spacing:-.02em}
@@ -353,7 +354,9 @@ nav.main a.active{color:#04060c;background:linear-gradient(135deg,var(--sky),var
   display:grid;place-items:center;
   box-shadow:0 10px 30px -14px rgba(56,189,248,.8);
 }
-.char .skin img{width:100%;height:100%;object-fit:cover;image-rendering:pixelated}
+.char .skin > *{grid-area:1/1}  /* picture sits on top of the fallback initial */
+.char .skin img{width:100%;height:100%;object-fit:cover;image-rendering:pixelated;position:relative}
+.char .skin img.photo{image-rendering:auto}
 .char .skin .fallback{font-size:32px;font-weight:800;color:var(--sky-soft)}
 .char h3{font-size:19px;margin-bottom:4px}
 .char .user{font-size:13px;color:var(--dim);margin-bottom:12px}
@@ -508,3 +511,17 @@ footer.site{border-top:1px solid var(--line);background:rgba(4,6,12,.7);margin-t
 .reveal{opacity:0;transform:translateY(18px);transition:opacity .55s ease,transform .55s ease}
 .reveal.in{opacity:1;transform:none}
 @media (prefers-reduced-motion:reduce){ .reveal{opacity:1;transform:none;transition:none} }
+
+/* ---------- admin: picture picker ---------- */
+.pic-picker{display:flex;gap:16px;align-items:center}
+.pic-preview{
+  flex:0 0 auto;width:72px;height:72px;border-radius:12px;overflow:hidden;display:grid;place-items:center;
+  border:1px solid var(--line-2);background:linear-gradient(135deg,var(--deep),#04060c);
+}
+.pic-preview img{width:100%;height:100%;object-fit:cover}
+.pic-preview img.skin-img{image-rendering:pixelated}
+.pic-preview span{font-size:26px;font-weight:800;color:var(--sky-soft)}
+.pic-controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center;min-width:0}
+.pic-controls .hint{flex-basis:100%;margin-top:2px}
+.pic-controls label.btn{cursor:pointer;text-transform:none;letter-spacing:0;font-size:13px;color:var(--text);margin:0}
+table.people .who img{object-fit:cover}

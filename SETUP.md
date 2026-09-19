@@ -27,35 +27,13 @@ Keep a notepad open. You'll copy A in Part 2 and use it in Part 3.
 
 **What this does:** gives Render a copy of your website to publish.
 
-Use **GitHub Desktop** for this. Don't use the website's upload page — it can't handle
-folders properly, and this site has four of them.
+✅ **Already done.** Your code is at **https://github.com/zakmp4/RiftEvents**, with
+`index.html` plus the `css`, `js`, `assets` and `server` folders. Skip to Part 2.
 
-1. Open **GitHub Desktop**. Sign in with your GitHub account if it asks.
-2. Menu bar: **File → Add local repository...**
-3. Click **Choose...**, select your `D:\RiftEvents` folder, then click **Select Folder**.
-4. It will say *"This directory does not appear to be a Git repository."*
-   That's expected. Click the blue **create a repository** link inside that message.
-5. A dialog opens. Check these:
-   - **Name:** `riftevents`
-   - **Git ignore:** None ← leave it. This folder already has the right one.
-   - **README:** leave unticked. There's already a README.
-   
-   Click **Create repository**.
-6. The left panel now fills with a list of every file. That's your whole website.
-7. Bottom left, in the **Summary** box, type: `Rift Events website`
-8. Click the blue **Commit to main** button underneath it.
-9. At the top of the window, click **Publish repository**.
-10. In the dialog that opens:
-    - **Name:** `riftevents`
-    - **Keep this code private:** leave this **ticked**.
-    - Click **Publish repository**.
-
-✅ **Check:** go to **https://github.com** and open your `riftevents` repo. You should see
-`index.html` plus the `css`, `js`, `assets` and `server` folders.
-
-> **Why private?** Your admin password's fingerprint lives in `js/admin.js`. A private repo
-> keeps it out of public view. Render can still deploy from private repos — when you connect
-> it in Part 3 it will ask for permission, which is normal.
+> **Private or public?** If the repo is public, consider switching it to private
+> (repo → **Settings** → scroll to **Danger Zone** → **Change visibility**). Nothing in it is a
+> password, but there's no reason for the code to be public. Render can deploy from private
+> repos — when you connect it in Part 3 it will ask for permission, which is normal.
 
 ---
 
@@ -142,15 +120,16 @@ you need it next.
 
 **What this does:** one line, and the website starts using the database.
 
-1. On your computer, open `D:\RiftEvents\js\data.js` in a text editor.
-   (Notepad works. VS Code or Notepad++ is nicer.)
-2. Find this line near the top — it's about 24 lines down:
+1. Go to **https://github.com/zakmp4/RiftEvents**
+2. Click the **js** folder, then click **data.js**.
+3. Click the **pencil icon** (✏️) at the top right of the file to edit it.
+4. Find this line near the top — it's about 24 lines down:
 
 ```js
   const API_BASE = ""; // <-- leave empty to use browser storage
 ```
 
-3. Put your API URL from Part 3 inside the quotes:
+5. Put your API URL from Part 3 inside the quotes:
 
 ```js
   const API_BASE = "https://riftevents-api.onrender.com";
@@ -158,13 +137,10 @@ you need it next.
 
    > No slash on the end. Keep the quotes and the semicolon.
 
-4. **Save the file** (Ctrl+S).
-5. Switch to **GitHub Desktop**. `data.js` now appears in the left panel, with your change
-   highlighted in green on the right.
-6. In the **Summary** box, type: `Connect site to the API`
-7. Click **Commit to main**.
-8. Click **Push origin** at the top. ← don't skip this. Committing saves it on your computer;
-   pushing is what sends it to GitHub.
+   > There's a similar-looking line higher up (around line 14) inside a comment — that one is
+   > only an example. Edit the one ending in `leave empty to use browser storage`.
+
+6. Click the green **Commit changes...** button (top right), then **Commit changes** again.
 
 ---
 
@@ -223,19 +199,17 @@ this — the data now lives on the internet instead of in one browser.
 
 # Making changes later
 
-You never have to repeat any of the above. To change the website, it's always the same four
-steps:
+You never have to repeat any of the above. To change the website:
 
-1. Edit the file in `D:\RiftEvents` on your computer and save it.
-2. Open **GitHub Desktop** — your change shows up automatically in the left panel.
-3. Type a short note in the **Summary** box, click **Commit to main**.
-4. Click **Push origin**.
+1. Go to **https://github.com/zakmp4/RiftEvents** and open the file you want to change.
+2. Click the **pencil icon** (✏️) and make your change.
+3. Click **Commit changes...** → **Commit changes**.
 
 Render notices and republishes within a minute or two, automatically. Refresh your site to
 see it.
 
-> If you forget to **Push origin**, your change stays on your computer and the live site
-> won't update. That's the single most common thing to trip over.
+> Edits made on the GitHub website don't appear in `D:\RiftEvents` on your computer. Don't
+> upload old files from your computer over the newer ones on GitHub, or you'll undo your edits.
 
 To add or remove people you don't touch GitHub at all — just use `/admin.html`. That writes
 straight to the database and is live instantly.
@@ -267,13 +241,9 @@ Render → your API service → **Logs**.
   Part 2.
 
 **I changed a file but the live site still shows the old version.**
-In GitHub Desktop, look at the top bar. If it says **Push origin** with a number next to it,
-your commit never left your computer — click it. If it says **Fetch origin**, the push worked
-and Render is probably still building (check the **Events** tab on Render).
-
-**GitHub Desktop doesn't show my repo / says "no local changes".**
-Make sure the **Current Repository** dropdown at the top left says `riftevents`. If it's on a
-different project, click it and pick `riftevents`.
+Open the file on GitHub and check your change is there — if not, the commit didn't go through.
+If it is, Render is probably still building: check the **Events** tab on Render, and refresh
+your site with **Ctrl+F5** once it says **Live**.
 
 **Render can't see my private repo.**
 Render → **New +** → when picking a repo, click **Configure account** and grant it access to
@@ -286,25 +256,4 @@ Two places, both required:
 
 ```bash
 node -e "console.log(require('crypto').createHash('sha256').update('YOUR_NEW_PASSWORD').digest('hex'))"
-```
-
----
-
-# If you'd rather use the command line than GitHub Desktop
-
-Part 1 becomes:
-
-```bash
-git init
-git add .
-git commit -m "Rift Events website"
-git branch -M main
-git remote add origin https://github.com/YOUR_USERNAME/riftevents.git
-git push -u origin main
-```
-
-After that, any change is:
-
-```bash
-git add . && git commit -m "what you changed" && git push
 ```

@@ -21,7 +21,7 @@
    ============================================================ */
 
 const RiftData = (function () {
-  const API_BASE = ""; // <-- leave empty to use browser storage
+  const API_BASE = "https://riftevents.onrender.com"; // <-- your Render API. Set to "" to use browser storage only
   const KEY = "rift.characters.v2";
 
   const RANKS = ["Owner", "Admin", "Moderator", "Host", "Builder", "Member"];
@@ -52,8 +52,15 @@ const RiftData = (function () {
       localStorage.setItem(KEY, JSON.stringify(arr));
     } catch (err) {
       console.warn("[RiftData] could not save", err);
+      throw new Error("Couldn't save — this browser's storage is full. Try a smaller picture.");
     }
     return arr;
+  }
+
+  /* A custom picture is a small image stored as text (a "data URL"). */
+  const IMAGE_PATTERN = /^data:image\/(png|jpeg|webp);base64,[A-Za-z0-9+/]+=*$/;
+  function isImage(value) {
+    return typeof value === "string" && IMAGE_PATTERN.test(value);
   }
 
   function newId() {
@@ -69,9 +76,10 @@ const RiftData = (function () {
     if (key) headers["x-admin-password"] = key;
 
     const res = await fetch(API_BASE + "/api/characters" + path, { headers, ...options });
+    const data = await res.json().catch(() => null);
     if (res.status === 401) throw new Error("Not authorised — log in to the admin panel again.");
-    if (!res.ok) throw new Error("Request failed: " + res.status);
-    return res.json();
+    if (!res.ok) throw new Error((data && data.error) || "Request failed: " + res.status);
+    return data;
   }
 
   /* ---------- public ---------- */
@@ -89,7 +97,8 @@ const RiftData = (function () {
       rank: person.rank || "Member",
       bio: (person.bio || "").trim(),
       tags: normaliseTags(person.tags),
-      joined: person.joined || new Date().toISOString().slice(0, 10)
+      joined: person.joined || new Date().toISOString().slice(0, 10),
+      image: isImage(person.image) ? person.image : ""
     };
     if (!record.name) throw new Error("A display name is required.");
     if (API_BASE) return api("", { method: "POST", body: JSON.stringify(record) });
@@ -107,6 +116,7 @@ const RiftData = (function () {
     const i = all.findIndex((p) => p.id === id);
     if (i === -1) throw new Error("Person not found.");
     all[i] = { ...all[i], ...patch, tags: normaliseTags(patch.tags ?? all[i].tags), id };
+    if (!isImage(all[i].image)) all[i].image = "";
     writeLocal(all);
     return all[i];
   }
@@ -127,13 +137,37 @@ const RiftData = (function () {
       rank: RANKS.includes(p.rank) ? p.rank : "Member",
       bio: String(p.bio || "").trim(),
       tags: normaliseTags(p.tags),
-      joined: p.joined || new Date().toISOString().slice(0, 10)
-    }));
+      joined: p.joined || new Date().toISOString().slice(0, 10),
+      image: isImage(p.image) ? p.image : ""
+    })).filter((p) => p.name);
+
+    if (API_BASE) {
+      // The API has no bulk endpoint, so clear the roster then add each person in turn.
+      await clearAll();
+      const saved = [];
+      for (const p of cleaned) {
+        const { id, ...fields } = p;
+        saved.push(await api("", { method: "POST", body: JSON.stringify(fields) }));
+      }
+      return saved;
+    }
+
     writeLocal(cleaned);
     return cleaned;
   }
 
+  async function clearAll() {
+    const current = await api("");
+    for (const p of current) {
+      await api("/" + p.id, { method: "DELETE" });
+    }
+  }
+
   async function resetToSeed() {
+    if (API_BASE) {
+      await clearAll();
+      return [];
+    }
     return writeLocal(SEED.slice());
   }
 
@@ -145,12 +179,12 @@ const RiftData = (function () {
     return [];
   }
 
-  /* Minecraft head render, with a graceful fallback if the
-     service is down or the username is not a real account. */
+  /* Minecraft head render (Minotar, with the hat layer). If the
+     service is down, the page falls back to the person's initial. */
   function avatarUrl(username, size) {
     if (!username) return null;
-    return "https://mc-heads.net/avatar/" + encodeURIComponent(username) + "/" + (size || 128);
+    return "https://minotar.net/helm/" + encodeURIComponent(username) + "/" + (size || 128) + ".png";
   }
 
-  return { RANKS, list, add, update, remove, replaceAll, resetToSeed, avatarUrl, normaliseTags };
+  return { RANKS, list, add, update, remove, replaceAll, resetToSeed, avatarUrl, normaliseTags, isImage };
 })();

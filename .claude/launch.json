@@ -4,8 +4,26 @@
     {
       "name": "rift",
       "runtimeExecutable": "node",
-      "runtimeArgs": [".claude/serve.js"],
+      "runtimeArgs": [
+        ".claude/serve.js"
+      ],
       "port": 5173
+    },
+    {
+      "name": "ocepvp",
+      "runtimeExecutable": "node",
+      "runtimeArgs": [
+        "D:/OcePvP/.claude/serve.js"
+      ],
+      "port": 5174
+    },
+    {
+      "name": "ocepvp-flat",
+      "runtimeExecutable": "node",
+      "runtimeArgs": [
+        "C:/Users/User/AppData/Local/Temp/claude/D--RiftEvents/270783bc-6df6-46ee-9e46-bedced388a8b/scratchpad/serve-flat.js"
+      ],
+      "port": 5175
     }
   ]
 }

@@ -188,7 +188,7 @@
 
     tbody.innerHTML = rows
       .map(function (p) {
-        const avatar = RiftData.avatarUrl(p.username, 64);
+        const avatar = RiftData.isImage(p.image) ? p.image : RiftData.avatarUrl(p.username, 64);
         const img = avatar
           ? '<img src="' + avatar + '" alt="" loading="lazy" onerror="this.style.visibility=\'hidden\'">'
           : '<img alt="" style="visibility:hidden">';
@@ -230,6 +230,107 @@
   }
 
   /* ---------- add / edit ---------- */
+  /* ---------- picture picker ---------- */
+  const PIC_SIZE = 256;          // saved pictures are 256x256
+  const PIC_MAX_CHARS = 380000;  // stay under the API's limit
+  const picInput = document.getElementById("f_image");
+  const picPreview = document.getElementById("picPreview");
+  const picRemove = document.getElementById("picRemove");
+  const picHint = document.getElementById("picHint");
+  const usernameInput = document.getElementById("f_username");
+  const PIC_HINT_DEFAULT = picHint.textContent;
+  let currentImage = "";
+
+  function showPreview() {
+    const username = usernameInput.value.trim();
+    const name = document.getElementById("f_name").value.trim();
+    if (currentImage) {
+      picPreview.innerHTML = '<img src="' + currentImage + '" alt="">';
+    } else if (username) {
+      picPreview.innerHTML = '<img class="skin-img" src="' + RiftData.avatarUrl(username, 128) +
+        '" alt="" onerror="this.remove()">';
+    } else {
+      picPreview.innerHTML = "<span>" + escapeHtml((name || "?").charAt(0).toUpperCase()) + "</span>";
+    }
+    picRemove.hidden = !currentImage;
+  }
+
+  // Shrink and square-crop the chosen file so it's small enough to store.
+  function processImage(file) {
+    return new Promise(function (resolve, reject) {
+      if (!/^image\/(png|jpeg|webp|gif)$/.test(file.type)) {
+        reject(new Error("Choose a PNG, JPG, WebP or GIF image."));
+        return;
+      }
+      if (file.size > 15 * 1024 * 1024) {
+        reject(new Error("That file is over 15 MB. Choose a smaller image."));
+        return;
+      }
+      const url = URL.createObjectURL(file);
+      const img = new Image();
+      img.onload = function () {
+        URL.revokeObjectURL(url);
+        const side = Math.min(img.naturalWidth, img.naturalHeight);
+        const sx = (img.naturalWidth - side) / 2;
+        const sy = (img.naturalHeight - side) / 2;
+        const canvas = document.createElement("canvas");
+        canvas.width = canvas.height = PIC_SIZE;
+        const ctx = canvas.getContext("2d");
+        // Keep pixel art crisp when scaling up small images (like skin renders).
+        ctx.imageSmoothingEnabled = side >= PIC_SIZE;
+        ctx.drawImage(img, sx, sy, side, side, 0, 0, PIC_SIZE, PIC_SIZE);
+
+        // WebP keeps transparency and is small; fall back if the browser can't make it.
+        let data = canvas.toDataURL("image/webp", 0.88);
+        if (data.indexOf("data:image/webp") !== 0) data = canvas.toDataURL("image/png");
+        if (data.length > PIC_MAX_CHARS) data = canvas.toDataURL("image/jpeg", 0.85);
+        if (data.length > PIC_MAX_CHARS) data = canvas.toDataURL("image/jpeg", 0.6);
+        if (!RiftData.isImage(data) || data.length > PIC_MAX_CHARS) {
+          reject(new Error("Couldn't shrink that picture enough. Try a different image."));
+          return;
+        }
+        resolve(data);
+      };
+      img.onerror = function () {
+        URL.revokeObjectURL(url);
+        reject(new Error("That file couldn't be opened as an image."));
+      };
+      img.src = url;
+    });
+  }
+
+  picInput.addEventListener("change", function () {
+    const file = picInput.files[0];
+    picInput.value = "";
+    if (!file) return;
+    picHint.textContent = "Preparing picture...";
+    processImage(file)
+      .then(function (data) {
+        currentImage = data;
+        picHint.textContent = "Picture ready — it saves when you click " +
+          (editingId ? "Save changes." : "Add person.");
+        showPreview();
+      })
+      .catch(function (err) {
+        picHint.textContent = PIC_HINT_DEFAULT;
+        notify(err.message, false);
+      });
+  });
+
+  picRemove.addEventListener("click", function () {
+    currentImage = "";
+    picHint.textContent = editingId
+      ? "Picture removed — click Save changes to confirm. Their skin will show instead."
+      : PIC_HINT_DEFAULT;
+    showPreview();
+  });
+
+  usernameInput.addEventListener("input", function () { if (!currentImage) showPreview(); });
+  showPreview();
+  document.getElementById("f_name").addEventListener("input", function () {
+    if (!currentImage && !usernameInput.value.trim()) showPreview();
+  });
+
   function formValues() {
     return {
       name: document.getElementById("f_name").value,
@@ -237,13 +338,17 @@
       rank: document.getElementById("f_rank").value,
       bio: document.getElementById("f_bio").value,
       tags: document.getElementById("f_tags").value,
-      joined: document.getElementById("f_joined").value
+      joined: document.getElementById("f_joined").value,
+      image: currentImage
     };
   }
 
   function resetForm() {
     form.reset();
     document.getElementById("f_rank").value = "Member";
+    currentImage = "";
+    picHint.textContent = PIC_HINT_DEFAULT;
+    showPreview();
     editingId = null;
     formTitle.textContent = "Add a person";
     submitBtn.textContent = "Add person";
@@ -260,6 +365,9 @@
     document.getElementById("f_bio").value = p.bio || "";
     document.getElementById("f_tags").value = (p.tags || []).join(", ");
     document.getElementById("f_joined").value = p.joined || "";
+    currentImage = RiftData.isImage(p.image) ? p.image : "";
+    picHint.textContent = PIC_HINT_DEFAULT;
+    showPreview();
     formTitle.textContent = "Editing " + p.name;
     submitBtn.textContent = "Save changes";
     cancelBtn.style.display = "inline-flex";
@@ -280,7 +388,8 @@
           rank: values.rank,
           bio: values.bio.trim(),
           tags: RiftData.normaliseTags(values.tags),
-          joined: values.joined
+          joined: values.joined,
+          image: values.image
         })
       : RiftData.add(values);
 

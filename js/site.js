@@ -99,13 +99,18 @@
 
   function cardFor(p) {
     const rankClass = "rank-" + String(p.rank || "Member").toLowerCase();
-    const avatar = RiftData.avatarUrl(p.username, 128);
     const initial = escapeHtml((p.name || "?").charAt(0).toUpperCase());
 
-    const skin = avatar
-      ? '<img src="' + avatar + '" alt="' + escapeHtml(p.name) + '" loading="lazy" ' +
-        "onerror=\"this.parentNode.innerHTML='<span class=&quot;fallback&quot;>" + initial + "</span>'\">"
-      : '<span class="fallback">' + initial + "</span>";
+    // Custom picture first, then their Minecraft skin, then their initial.
+    // The initial always sits underneath, so if an image fails it just gets removed.
+    let picture = "";
+    if (RiftData.isImage(p.image)) {
+      picture = '<img class="photo" src="' + p.image + '" alt="' + escapeHtml(p.name) + '">';
+    } else if (p.username) {
+      picture = '<img src="' + RiftData.avatarUrl(p.username, 128) + '" alt="' + escapeHtml(p.name) +
+        '" loading="lazy" onerror="this.remove()">';
+    }
+    const skin = '<span class="fallback">' + initial + "</span>" + picture;
 
     const tags = (p.tags || [])
       .map(function (t) { return "<span>" + escapeHtml(t) + "</span>"; })
