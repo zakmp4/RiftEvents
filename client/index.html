@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rift Client — Rift Events</title>
+<meta name="description" content="Rift Client is the Rift Events Minecraft client: one click into riftevents.net, a built-in HUD and a Right Shift mod menu. Free for Windows.">
+<link rel="icon" href="../assets/re-logo.webp">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Press+Start+2P&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+<style>
+  .client-hero .hero-art img{filter:drop-shadow(0 24px 50px rgba(56,189,248,.45))}
+  .dl-meta{color:var(--dim);font-size:14px;margin-top:18px}
+  .dl-meta b{color:var(--sky-soft)}
+  .steps{counter-reset:step;display:grid;gap:14px;margin:0;padding:0;list-style:none}
+  .steps li{counter-increment:step;display:flex;gap:16px;align-items:flex-start;padding:18px 20px}
+  .steps li::before{
+    content:counter(step);flex:none;width:34px;height:34px;display:grid;place-items:center;
+    font-family:"Press Start 2P",monospace;font-size:12px;color:#04060c;border-radius:8px;
+    background:linear-gradient(135deg,var(--sky),var(--cyan));
+  }
+  .steps b{display:block;margin-bottom:2px}
+  .steps span{color:var(--muted);font-size:14.5px}
+  kbd{font-family:"Press Start 2P",monospace;font-size:10px;padding:3px 7px;border-radius:5px;
+      background:var(--panel-2);border:1px solid var(--line-2);color:var(--text)}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="shell">
+    <div class="status">
+      <i class="dot"></i>
+      <span>Season 1 is filming</span>
+    </div>
+    <div class="links">
+      <a href="../rules.html">Rules</a>
+      <a href="../support.html">Support</a>
+      <a href="./">Rift Client</a>
+      <a href="https://discord.riftevents.net">Discord</a>
+    </div>
+  </div>
+</div>
+
+<header class="masthead">
+  <div class="shell">
+    <a class="brand" href="../index.html">
+      <img src="../assets/logo.webp" onerror="this.onerror=null;this.src='../assets/logo.svg'" alt="Rift Events logo">
+      <span class="name"><b>Rift Events</b><span>Scripted SMP</span></span>
+    </a>
+
+    <nav class="main">
+      <a href="../index.html">Home</a>
+      <a href="./" class="active">Rift Client</a>
+      <a href="../rules.html">Rules &amp; Policies</a>
+      <a href="../support.html">Support</a>
+    </nav>
+
+    <div class="nav-right">
+      <button class="ip-chip" data-copy="riftevents.net" title="Click to copy">
+        <span>SERVER IP</span><b>riftevents.net</b>
+      </button>
+      <a class="btn btn-primary" href="#download">Download</a>
+      <button class="burger" aria-label="Toggle menu" aria-expanded="false">&#9776;</button>
+    </div>
+  </div>
+</header>
+
+<!-- ================= HERO ================= -->
+<section class="hero client-hero" id="download">
+  <div class="shell">
+    <div>
+      <span class="eyebrow"><i class="dot"></i> Free &middot; Windows 10 / 11</span>
+      <h1>One click from the desktop <span class="grad">into the rift.</span></h1>
+      <p class="lead">
+        Rift Client is the Rift Events Minecraft client. Hit Play in Rift Events mode and it starts
+        the game and drops you straight onto riftevents.net, or sends the game you already have
+        open. It comes with a built-in HUD and a Right Shift mod menu, and it updates itself.
+      </p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" id="dl-btn" href="https://github.com/zakmp4/RiftEvents/releases/latest">Download for Windows</a>
+        <button class="btn btn-ghost" data-copy="riftevents.net">Copy Server IP</button>
+      </div>
+      <p class="dl-meta" id="dl-meta">Latest release on GitHub</p>
+    </div>
+
+    <div class="hero-art">
+      <img src="../assets/rift-client-logo.webp" alt="Rift Client">
+    </div>
+  </div>
+</section>
+
+<!-- ================= FEATURES ================= -->
+<section class="section" style="padding-top:0">
+  <div class="shell">
+    <div class="section-head">
+      <div>
+        <div class="kicker">What you get</div>
+        <h2>Built for Rift Events</h2>
+      </div>
+    </div>
+
+    <div class="grid-4">
+      <div class="card feature reveal">
+        <div class="ico"><img src="../assets/re-logo.webp" alt="" style="width:30px;height:auto"></div>
+        <h3>Rift Events mode</h3>
+        <p>Click the RE logo in the launcher, press Play, and you're on the server. Already in game? It asks whether to join for you or open a new window.</p>
+      </div>
+      <div class="card feature reveal">
+        <div class="ico">&#9000;</div>
+        <h3>Right Shift menu</h3>
+        <p>Press <kbd>RIGHT SHIFT</kbd> in game to turn modules on and off, and move the HUD to either side of the screen.</p>
+      </div>
+      <div class="card feature reveal">
+        <div class="ico">&#128200;</div>
+        <h3>Clean HUD</h3>
+        <p>FPS counter, keystrokes, coordinates, ping and server address. No mods folder, nothing to install yourself.</p>
+      </div>
+      <div class="card feature reveal">
+        <div class="ico">&#128260;</div>
+        <h3>Updates itself</h3>
+        <p>New versions download in the background and install the next time you restart the launcher.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= INSTALL ================= -->
+<section class="section" style="padding-top:0">
+  <div class="shell">
+    <div class="section-head">
+      <div>
+        <div class="kicker">Getting started</div>
+        <h2>Install in a minute</h2>
+      </div>
+    </div>
+
+    <ol class="steps">
+      <li class="card"><div><b>Download the installer</b><span>Use the button above. It's one file, about 100 MB.</span></div></li>
+      <li class="card"><div><b>Run it</b><span>If Windows says "Windows protected your PC", click <b style="display:inline">More info</b> &rarr; <b style="display:inline">Run anyway</b>. That happens with new apps that aren't code-signed yet.</span></div></li>
+      <li class="card"><div><b>Sign in with Microsoft</b><span>Use the account that owns Minecraft: Java Edition. Your password goes to Microsoft's own sign-in page, never to us.</span></div></li>
+      <li class="card"><div><b>Click RE, then Play</b><span>The first launch downloads Minecraft and Java (a few minutes). After that you're straight in.</span></div></li>
+    </ol>
+  </div>
+</section>
+
+<footer class="site">
+  <div class="shell">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <img src="../assets/logo.webp" onerror="this.onerror=null;this.src='../assets/logo.svg'" alt="Rift Events">
+        <p>A scripted Minecraft SMP. Written in advance, played straight, and never explained to the cast beforehand.</p>
+      </div>
+      <div>
+        <h5>The SMP</h5>
+        <ul>
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="./">Rift Client</a></li>
+          <li><a href="../rules.html">Rules &amp; Policies</a></li>
+          <li><a href="../support.html">Support</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Community</h5>
+        <ul>
+          <li><a href="https://discord.riftevents.net">Discord</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Info</h5>
+        <ul>
+          <li><a href="../rules.html#conduct">Code of conduct</a></li>
+          <li><a href="../rules.html#privacy">Privacy</a></li>
+          <li><a href="../support.html#contact">Contact staff</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="foot-bottom">
+      <span>&copy; <span data-year></span> Rift Events. Not affiliated with Mojang Studios or Microsoft.</span>
+      <span>Server IP: <b style="color:var(--sky-soft)">riftevents.net</b></span>
+    </div>
+  </div>
+</footer>
+
+<script src="../js/site.js"></script>
+<script>
+  // latest.yml (next to this page) is the same file the launcher checks for updates,
+  // so the download button always points at the newest installer.
+  fetch("latest.yml", { cache: "no-store" })
+    .then(function (r) { if (!r.ok) throw new Error(r.status); return r.text(); })
+    .then(function (yml) {
+      var version = (/^version:\s*(.+)$/m.exec(yml) || [])[1];
+      var path = (/^path:\s*(.+)$/m.exec(yml) || [])[1];
+      var size = (/^\s+size:\s*(\d+)/m.exec(yml) || [])[1];
+      if (!path) return;
+      document.getElementById("dl-btn").href = path.trim();
+      document.getElementById("dl-meta").innerHTML =
+        "Version <b>" + version.trim() + "</b>" +
+        (size ? " &nbsp;&middot;&nbsp; " + Math.round(size / 1048576) + " MB" : "") +
+        " &nbsp;&middot;&nbsp; Windows 10 / 11";
+    })
+    .catch(function () { /* keep the GitHub releases link */ });
+</script>
+</body>
+</html>
