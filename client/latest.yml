@@ -1,8 +1,8 @@
 version: 1.0.0
 files:
   - url: https://github.com/zakmp4/RiftEvents/releases/download/v1.0.0/Rift-Client-Setup-1.0.0.exe
-    sha512: +dZW0pkYYHNcHzlQCcOzpuycNATeSc93Dfbnpt0karwEkJ5FY/2c3wKzn+8Js+jHY+hY77cloEr5WPS/dPAfvQ==
-    size: 108029979
+    sha512: DvTD+z0UlaX3YMC9lN4UQ8z4Azhy9odGigyzUggFPstdG/sFYbbI8lL8DlqZKbJYdJV4h2+7bk3TrI0vaYjpYQ==
+    size: 108031477
 path: https://github.com/zakmp4/RiftEvents/releases/download/v1.0.0/Rift-Client-Setup-1.0.0.exe
-sha512: +dZW0pkYYHNcHzlQCcOzpuycNATeSc93Dfbnpt0karwEkJ5FY/2c3wKzn+8Js+jHY+hY77cloEr5WPS/dPAfvQ==
-releaseDate: '2026-11-21T12:41:54.094Z'
+sha512: DvTD+z0UlaX3YMC9lN4UQ8z4Azhy9odGigyzUggFPstdG/sFYbbI8lL8DlqZKbJYdJV4h2+7bk3TrI0vaYjpYQ==
+releaseDate: '2026-11-22T07:39:51.726Z'
