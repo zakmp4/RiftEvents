@@ -1,6 +1,6 @@
 # Rift Events
 
-Website for Rift Events, a scripted Minecraft SMP. It's plain HTML, CSS and JavaScript: no build step, no framework, no database. It's hosted on **GitHub Pages** at **https://play.riftevents.net**.
+Website for Rift Events, a scripted Minecraft SMP. It's plain HTML, CSS and JavaScript: no build step, no framework, no database. It's hosted on **GitHub Pages** at **https://store.riftevents.net**.
 
 - **Server IP:** riftevents.net
 - **Discord:** https://discord.riftevents.net
@@ -10,25 +10,25 @@ Website for Rift Events, a scripted Minecraft SMP. It's plain HTML, CSS and Java
 | File | What it is |
 |---|---|
 | `index.html` | Home: hero, news/announcements, sidebar, what makes it scripted |
-| `client/index.html` | Rift Client download page (`play.riftevents.net/client`) |
+| `client/index.html` | Rift Client download page (`store.riftevents.net/client`) |
 | `client/latest.yml` | Rift Client update manifest. The launcher reads it to find updates, and the download button reads it too. |
 | `rules.html` | Rules, punishment policy, privacy policy |
 | `support.html` | FAQ, ban appeals, Discord contact routes |
-| `CNAME` | Tells GitHub Pages to serve the site on `play.riftevents.net` |
+| `CNAME` | Tells GitHub Pages to serve the site on `store.riftevents.net` |
 | `.nojekyll` | Tells GitHub Pages to serve the files as-is |
 
 ## Hosting on GitHub Pages (one-time setup)
 
 1. **Make the repository public.** GitHub Pages and public release downloads need it on a free account. In the repo, go to **Settings → General → Danger Zone → Change visibility**.
 2. **Turn on Pages.** Go to **Settings → Pages**. Under *Build and deployment* pick **Deploy from a branch**, then **main** and **/ (root)**, and click Save.
-3. **Custom domain.** Still in Settings → Pages, `play.riftevents.net` should already be filled in from the `CNAME` file. Once the DNS change below has gone through, tick **Enforce HTTPS**.
-4. **DNS.** Where riftevents.net's DNS is managed, change the `play` record to:
+3. **Custom domain.** Still in Settings → Pages, `store.riftevents.net` should already be filled in from the `CNAME` file. Once the DNS change below has gone through, tick **Enforce HTTPS**.
+4. **DNS.** Where riftevents.net's DNS is managed, add this record:
 
    | Type | Name | Value |
    |---|---|---|
-   | CNAME | `play` | `zakmp4.github.io` |
+   | CNAME | `store` | `zakmp4.github.io` |
 
-   It currently points to `riftevents-1.onrender.com`. Don't touch the records for `riftevents.net` itself; that's the Minecraft server.
+   Don't touch the records for `riftevents.net` itself; that's the Minecraft server.
 5. **Shut down the old Render services** (the static site and the API) and the MongoDB Atlas cluster. The site doesn't use them any more.
 
 After that, every push to `main` updates the live site within a minute or two.
